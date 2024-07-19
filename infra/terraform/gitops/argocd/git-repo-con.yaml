@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: Secret
+metadata:
+  name: private-ws-stack-dados-k8s
+  namespace: gitops
+  labels:
+    argocd.argoproj.io/secret-type: repository
+stringData:
+  url: https://luanmorenomaciel@github.com/owshq-academy/ws-stack-dados-k8s.git
+  # password: # token
+  username: not-used

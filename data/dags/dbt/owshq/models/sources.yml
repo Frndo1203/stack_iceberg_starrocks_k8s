@@ -1,0 +1,15 @@
+version: 2
+
+sources:
+  - name: minio
+    database: minio
+    schema: landing
+    tables:
+      - name: mssql_users_parquet
+      - name: mssql_credit_card_parquet
+      - name: postgres_payments_parquet
+      - name: postgres_subscription_parquet
+      - name: postgres_vehicle_parquet
+      - name: mongodb_rides_parquet
+      - name: mongodb_stripe_parquet
+      - name: mongodb_users_parquet
