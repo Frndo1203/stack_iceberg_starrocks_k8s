@@ -17,6 +17,12 @@ kubectl apply -f app-manifests/deepstorage/minio-tenant.yaml
 ```shell
 kubectl apply -f app-manifests/metastore/hive-metastore.yaml
 ```
+### starrocks [database]
+```shell
+helm repo add starrocks https://starrocks.github.io/starrocks-kubernetes-operator
+helm repo update
+helm install starrocks starrocks/starrocks
+```
 
 ### trino [warehouse]
 ```shell

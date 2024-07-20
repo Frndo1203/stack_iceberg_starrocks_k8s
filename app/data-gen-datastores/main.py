@@ -51,7 +51,9 @@ class MinioStorage(object):
     This class is used to write data into the MinIO server
     """
 
-    def __init__(self, endpoint=None, access_key=None, secret_key=None, bucket_name=None):
+    def __init__(
+        self, endpoint=None, access_key=None, secret_key=None, bucket_name=None
+    ):
         """
         Initialize the class with the provided parameters.
 
@@ -117,15 +119,15 @@ class MinioStorage(object):
         """
 
         pd_df = pd.DataFrame(dt)
-        pd_df['user_id'] = api.gen_user_id()
-        pd_df['dt_current_timestamp'] = api.gen_timestamp()
+        pd_df["user_id"] = api.gen_user_id()
+        pd_df["dt_current_timestamp"] = api.gen_timestamp()
 
         if is_cpf:
-            pd_df['cpf'] = [api.gen_cpf() for _ in range(len(pd_df))]
+            pd_df["cpf"] = [api.gen_cpf() for _ in range(len(pd_df))]
 
         if format_type == "json":
             if ds_type != "redis":
-                json_data = pd_df.to_json(orient="records").encode('utf-8')
+                json_data = pd_df.to_json(orient="records").encode("utf-8")
                 return json_data, ds_type
         elif format_type == "parquet":
             parquet_table = pa.Table.from_pandas(pd_df)
@@ -154,14 +156,18 @@ class MinioStorage(object):
         the data is uploaded as a json file. If the format type is "parquet", the data is uploaded * as a parquet file.
         """
 
-        year, month, day, hour, minute, second = (datetime.now().strftime("%Y %m %d %H %M %S").split())
-        file_loc_root_folder: str = "com.owshq.data"
+        year, month, day, hour, minute, second = (
+            datetime.now().strftime("%Y %m %d %H %M %S").split()
+        )
+        file_loc_root_folder: str = "com.starrocks-mds-dev.data"
         file_prefix = file_loc_root_folder + "/" + ds_type
 
         if format_type == "json":
 
-            timestamp = f'{year}_{month}_{day}_{hour}_{minute}_{second}.json'
-            object_name = self.create_object_name(file_prefix, object_name, format_type, timestamp)
+            timestamp = f"{year}_{month}_{day}_{hour}_{minute}_{second}.json"
+            object_name = self.create_object_name(
+                file_prefix, object_name, format_type, timestamp
+            )
 
             print(f"file location: {object_name}")
 
@@ -173,7 +179,7 @@ class MinioStorage(object):
                     object_name=object_name,
                     data=json_buffer,
                     length=len(data),
-                    content_type='application/json'
+                    content_type="application/json",
                 )
 
                 return put_data
@@ -184,7 +190,9 @@ class MinioStorage(object):
         elif format_type == "parquet":
 
             file_uuid = str(uuid.uuid4())
-            object_name = self.create_object_name(file_prefix, object_name, format_type, file_uuid)
+            object_name = self.create_object_name(
+                file_prefix, object_name, format_type, file_uuid
+            )
 
             print(f"file location: {object_name}")
 
@@ -199,7 +207,7 @@ class MinioStorage(object):
                         object_name=f"{object_name}.parquet",
                         data=temp_file,
                         length=os.path.getsize(temp_file.name),
-                        content_type='application/octet-stream'
+                        content_type="application/octet-stream",
                     )
 
                     return put_data
@@ -221,7 +229,7 @@ class MinioStorage(object):
 
         gen_cpf = api.gen_cpf()
 
-        params = {'size': 100}
+        params = {"size": 100}
         urls = {
             "users": "https://random-data-api.com/api/users/random_user",
             "credit_card": "https://random-data-api.com/api/business_credit_card/random_card",
@@ -229,7 +237,7 @@ class MinioStorage(object):
             "stripe": "https://random-data-api.com/api/stripe/random_stripe",
             "google_auth": "https://random-data-api.com/api/omniauth/google_get",
             "linkedin_auth": "https://random-data-api.com/api/omniauth/linkedin_get",
-            "apple_auth": "https://random-data-api.com/api/omniauth/apple_get"
+            "apple_auth": "https://random-data-api.com/api/omniauth/apple_get",
         }
 
         if ds_type == "mssql":
@@ -237,26 +245,63 @@ class MinioStorage(object):
             dt_users = users.get_multiple_rows(gen_dt_rows=100)
             dt_credit_card = api.api_get_request(url=urls["credit_card"], params=params)
 
-            users_json, ds_type = self.create_dataframe(dt=dt_users, ds_type=ds_type, format_type=format_type, is_cpf=gen_cpf)
-            credit_card_json, ds_type = self.create_dataframe(dt=dt_credit_card, ds_type=ds_type, format_type=format_type)
+            users_json, ds_type = self.create_dataframe(
+                dt=dt_users, ds_type=ds_type, format_type=format_type, is_cpf=gen_cpf
+            )
+            credit_card_json, ds_type = self.create_dataframe(
+                dt=dt_credit_card, ds_type=ds_type, format_type=format_type
+            )
 
-            return_users = self.upload_data(data=users_json, object_name="users", ds_type=ds_type, format_type=format_type)
-            return_credit_card = self.upload_data(data=credit_card_json, object_name="credit_card", ds_type=ds_type, format_type=format_type)
+            return_users = self.upload_data(
+                data=users_json,
+                object_name="users",
+                ds_type=ds_type,
+                format_type=format_type,
+            )
+            return_credit_card = self.upload_data(
+                data=credit_card_json,
+                object_name="credit_card",
+                ds_type=ds_type,
+                format_type=format_type,
+            )
 
             return return_users, return_credit_card
 
         elif ds_type == "postgres":
             dt_payments = payments.get_multiple_rows(gen_dt_rows=100)
-            dt_subscription = api.api_get_request(url=urls["subscription"], params=params)
+            dt_subscription = api.api_get_request(
+                url=urls["subscription"], params=params
+            )
             dt_vehicle = vehicle.get_multiple_rows(gen_dt_rows=100)
 
-            payments_json, ds_type = self.create_dataframe(dt=dt_payments, ds_type=ds_type, format_type=format_type)
-            subscription_json, ds_type = self.create_dataframe(dt=dt_subscription, ds_type=ds_type, format_type=format_type)
-            dt_vehicle_json, ds_type = self.create_dataframe(dt=dt_vehicle, ds_type=ds_type, format_type=format_type)
+            payments_json, ds_type = self.create_dataframe(
+                dt=dt_payments, ds_type=ds_type, format_type=format_type
+            )
+            subscription_json, ds_type = self.create_dataframe(
+                dt=dt_subscription, ds_type=ds_type, format_type=format_type
+            )
+            dt_vehicle_json, ds_type = self.create_dataframe(
+                dt=dt_vehicle, ds_type=ds_type, format_type=format_type
+            )
 
-            return_payments = self.upload_data(data=payments_json, object_name="payments", ds_type=ds_type, format_type=format_type)
-            return_subscription = self.upload_data(data=subscription_json, object_name="subscription", ds_type=ds_type, format_type=format_type)
-            return_vehicle = self.upload_data(data=dt_vehicle_json, object_name="vehicle", ds_type=ds_type, format_type=format_type)
+            return_payments = self.upload_data(
+                data=payments_json,
+                object_name="payments",
+                ds_type=ds_type,
+                format_type=format_type,
+            )
+            return_subscription = self.upload_data(
+                data=subscription_json,
+                object_name="subscription",
+                ds_type=ds_type,
+                format_type=format_type,
+            )
+            return_vehicle = self.upload_data(
+                data=dt_vehicle_json,
+                object_name="vehicle",
+                ds_type=ds_type,
+                format_type=format_type,
+            )
 
             return return_payments, return_subscription, return_vehicle
 
@@ -266,13 +311,34 @@ class MinioStorage(object):
             dt_users = api.api_get_request(url=urls["users"], params=params)
             dt_stripe = api.api_get_request(url=urls["stripe"], params=params)
 
-            rides_json, ds_type = self.create_dataframe(dt=dt_rides, ds_type=ds_type, format_type=format_type, is_cpf=gen_cpf)
-            users_json, ds_type = self.create_dataframe(dt=dt_users, ds_type=ds_type, format_type=format_type, is_cpf=gen_cpf)
-            stripe_json, ds_type = self.create_dataframe(dt=dt_stripe, ds_type=ds_type, format_type=format_type)
+            rides_json, ds_type = self.create_dataframe(
+                dt=dt_rides, ds_type=ds_type, format_type=format_type, is_cpf=gen_cpf
+            )
+            users_json, ds_type = self.create_dataframe(
+                dt=dt_users, ds_type=ds_type, format_type=format_type, is_cpf=gen_cpf
+            )
+            stripe_json, ds_type = self.create_dataframe(
+                dt=dt_stripe, ds_type=ds_type, format_type=format_type
+            )
 
-            return_rides = self.upload_data(data=rides_json, object_name="rides", ds_type=ds_type, format_type=format_type)
-            return_users = self.upload_data(data=users_json, object_name="users", ds_type=ds_type, format_type=format_type)
-            return_stripe = self.upload_data(data=stripe_json, object_name="stripe", ds_type=ds_type, format_type=format_type)
+            return_rides = self.upload_data(
+                data=rides_json,
+                object_name="rides",
+                ds_type=ds_type,
+                format_type=format_type,
+            )
+            return_users = self.upload_data(
+                data=users_json,
+                object_name="users",
+                ds_type=ds_type,
+                format_type=format_type,
+            )
+            return_stripe = self.upload_data(
+                data=stripe_json,
+                object_name="stripe",
+                ds_type=ds_type,
+                format_type=format_type,
+            )
 
             return return_rides, return_users, return_stripe
 
@@ -284,7 +350,9 @@ class MinioStorage(object):
             dt_google_auth["user_id"] = user_id
             dt_google_auth["timestamp"] = timestamp
 
-            dt_linkedin_auth = api.api_get_request(url=urls["linkedin_auth"], params=params)
+            dt_linkedin_auth = api.api_get_request(
+                url=urls["linkedin_auth"], params=params
+            )
             dt_linkedin_auth["user_id"] = user_id
             dt_linkedin_auth["timestamp"] = timestamp
 
@@ -292,12 +360,33 @@ class MinioStorage(object):
             dt_apple_auth["user_id"] = user_id
             dt_apple_auth["timestamp"] = timestamp
 
-            google_auth_json = json.dumps(dt_google_auth, ensure_ascii=False).encode('utf-8')
-            linkedin_auth_json = json.dumps(dt_linkedin_auth, ensure_ascii=False).encode('utf-8')
-            apple_auth_json = json.dumps(dt_apple_auth, ensure_ascii=False).encode('utf-8')
+            google_auth_json = json.dumps(dt_google_auth, ensure_ascii=False).encode(
+                "utf-8"
+            )
+            linkedin_auth_json = json.dumps(
+                dt_linkedin_auth, ensure_ascii=False
+            ).encode("utf-8")
+            apple_auth_json = json.dumps(dt_apple_auth, ensure_ascii=False).encode(
+                "utf-8"
+            )
 
-            return_google_auth = self.upload_data(data=google_auth_json, object_name="google_auth", ds_type=ds_type, format_type=format_type)
-            return_linkedin_auth = self.upload_data(data=linkedin_auth_json, object_name="linkedin_auth", ds_type=ds_type, format_type=format_type)
-            return_apple_auth = self.upload_data(data=apple_auth_json, object_name="apple_auth", ds_type=ds_type, format_type=format_type)
+            return_google_auth = self.upload_data(
+                data=google_auth_json,
+                object_name="google_auth",
+                ds_type=ds_type,
+                format_type=format_type,
+            )
+            return_linkedin_auth = self.upload_data(
+                data=linkedin_auth_json,
+                object_name="linkedin_auth",
+                ds_type=ds_type,
+                format_type=format_type,
+            )
+            return_apple_auth = self.upload_data(
+                data=apple_auth_json,
+                object_name="apple_auth",
+                ds_type=ds_type,
+                format_type=format_type,
+            )
 
             return return_google_auth, return_linkedin_auth, return_apple_auth

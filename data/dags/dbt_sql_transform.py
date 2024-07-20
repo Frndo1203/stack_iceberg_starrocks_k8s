@@ -10,21 +10,13 @@ from pathlib import Path
 from airflow.decorators import dag
 from airflow.operators.empty import EmptyOperator
 
-from cosmos import (
-    DbtDag,
-    ProfileConfig,
-    ProjectConfig
-)
+from cosmos import DbtDag, ProfileConfig, ProjectConfig
 
 logger = logging.getLogger(__name__)
 doc_md = """
 """
 
-default_args = {
-    "owner": "owshq",
-    "retries": 1,
-    "retry_delay": 0
-}
+default_args = {"owner": "starrocks-mds", "retries": 1, "retry_delay": 0}
 
 default_dbt_root_path = Path(__file__).parent / "dbt"
 dbt_root_path = Path(os.getenv("DBT_ROOT_PATH", default_dbt_root_path))
@@ -32,17 +24,16 @@ dbt_root_path = Path(os.getenv("DBT_ROOT_PATH", default_dbt_root_path))
 profile_config = ProfileConfig(
     profile_name="iceberg",
     target_name="dev",
-    profiles_yml_filepath=(dbt_root_path / "owshq/profiles.yml")
+    profiles_yml_filepath=(dbt_root_path / "starrocks-mds/profiles.yml"),
 )
 
 dbt_sql_transform = DbtDag(
-    project_config=ProjectConfig((dbt_root_path / "owshq").as_posix()),
+    project_config=ProjectConfig((dbt_root_path / "starrocks-mds").as_posix()),
     profile_config=profile_config,
     operator_args={
         "install_deps": True,
         "full_refresh": True,
     },
-
     schedule_interval=timedelta(minutes=30),
     start_date=datetime(2024, 2, 23),
     catchup=False,

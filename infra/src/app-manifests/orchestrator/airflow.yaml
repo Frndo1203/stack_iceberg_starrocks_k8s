@@ -6,19 +6,19 @@ metadata:
 spec:
   project: default
   source:
-    repoURL: 'https://github.com/owshq-academy/ws-stack-dados-k8s.git'
+    repoURL: 'https://github.com/Frndo1203/stack_iceberg_starrocks_k8s.git'
     path: infra/src/helm-charts/airflow
     targetRevision: HEAD
     helm:
       valueFiles:
-        - values.yaml
+      - values.yaml
   destination:
-    name: 'owshq-orion-ws-dev'
+    name: 'starrocks-mds-dev'
     namespace: orchestrator
     server: ''
   syncPolicy:
     syncOptions:
-      - CreateNamespace=true
+    - CreateNamespace=true
     automated:
       prune: true
       selfHeal: true

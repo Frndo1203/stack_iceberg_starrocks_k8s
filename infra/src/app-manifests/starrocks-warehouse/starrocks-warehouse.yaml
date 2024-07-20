@@ -1,0 +1,24 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: starrocks
+  namespace: gitops
+spec:
+  project: default
+  source:
+    repoURL: 'https://github.com/Frndo1203/stack_iceberg_starrocks_k8s.git'
+    path: infra/src/helm-charts/starrocks-warehouse
+    targetRevision: HEAD
+    helm:
+      valueFiles:
+      - values.yaml
+  destination:
+    name: 'starrocks-mds-dev'
+    namespace: orchestrator
+    server: ''
+  syncPolicy:
+    syncOptions:
+    - CreateNamespace=true
+    automated:
+      prune: true
+      selfHeal: true
