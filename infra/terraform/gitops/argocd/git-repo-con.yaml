@@ -6,6 +6,6 @@ metadata:
   labels:
     argocd.argoproj.io/secret-type: repository
 stringData:
-  url: https://luanmorenomaciel@github.com/owshq-academy/ws-stack-dados-k8s.git
-  # password: # token
+  url: https://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@github.com/Frndo1203/stack_iceberg_starrocks_k8s.git
+  password: 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
   username: not-used
