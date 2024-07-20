@@ -78,7 +78,7 @@ airflowVersion: "2.8.1"
 # Images
 images:
   airflow:
-    repository: owshq/owshq-apache-airflow
+    repository: starrocks-mds/starrocks-mds-apache-airflow
     tag: 2.8.1
     # repository: ~
     # tag: ~ 
@@ -1256,11 +1256,11 @@ webserver:
   defaultUser:
     enabled: true
     role: Admin
-    username: luanmoreno
-    email: luan.moreno@owshq.com
-    firstName: luan moreno
-    lastName: medeiros maciel
-    password: luanmoreno
+    username: frndo1203
+    email: oliveirafer06@gmail.com
+    firstName: fernando
+    lastName: oliveira
+    password: liga00123
 
   # Launch additional containers into webserver.
   extraContainers: []

@@ -16,7 +16,7 @@ CREATE TABLE IF NOT EXISTS minio.landing.mssql_users_parquet (
     dt_current_timestamp VARCHAR,
     cpf VARCHAR
 ) WITH (
-    external_location = 's3a://landing/com.owshq.data/mssql/users/parquet',
+    external_location = 's3a://landing/com.starrocks-mds.data/mssql/users/parquet',
     format = 'PARQUET'
 );
 
@@ -31,7 +31,7 @@ CREATE TABLE minio.landing.mssql_credit_card_parquet (
     user_id BIGINT,
     dt_current_timestamp VARCHAR
 ) WITH (
-    external_location = 's3a://landing/com.owshq.data/mssql/credit_card/parquet',
+    external_location = 's3a://landing/com.starrocks-mds.data/mssql/credit_card/parquet',
     format = 'PARQUET'
 );
 
@@ -52,7 +52,7 @@ CREATE TABLE minio.landing.postgres_payments_parquet (
     time VARCHAR,
     dt_current_timestamp VARCHAR
 ) WITH (
-    external_location = 's3a://landing/com.owshq.data/postgres/payments/parquet',
+    external_location = 's3a://landing/com.starrocks-mds.data/postgres/payments/parquet',
     format = 'PARQUET'
 );
 
@@ -69,7 +69,7 @@ CREATE TABLE minio.landing.postgres_subscription_parquet (
     user_id BIGINT,
     dt_current_timestamp VARCHAR
 ) WITH (
-    external_location = 's3a://landing/com.owshq.data/postgres/subscription/parquet',
+    external_location = 's3a://landing/com.starrocks-mds.data/postgres/subscription/parquet',
     format = 'PARQUET'
 );
 
@@ -91,7 +91,7 @@ CREATE TABLE minio.landing.postgres_vehicle_parquet (
     dt_current_timestamp VARCHAR,
     user_id BIGINT
 ) WITH (
-    external_location = 's3a://landing/com.owshq.data/postgres/vehicle/parquet',
+    external_location = 's3a://landing/com.starrocks-mds.data/postgres/vehicle/parquet',
     format = 'PARQUET'
 );
 
@@ -113,7 +113,7 @@ CREATE TABLE minio.landing.mongodb_rides_parquet (
     dt_current_timestamp VARCHAR,
     cpf VARCHAR
 ) WITH (
-    external_location = 's3a://landing/com.owshq.data/mongodb/rides/parquet',
+    external_location = 's3a://landing/com.starrocks-mds.data/mongodb/rides/parquet',
     format = 'PARQUET'
 );
 
@@ -132,7 +132,7 @@ CREATE TABLE minio.landing.mongodb_stripe_parquet (
     user_id BIGINT,
     dt_current_timestamp VARCHAR
 ) WITH (
-    external_location = 's3a://landing/com.owshq.data/mongodb/stripe/parquet',
+    external_location = 's3a://landing/com.starrocks-mds.data/mongodb/stripe/parquet',
     format = 'PARQUET'
 );
 
@@ -167,6 +167,6 @@ CREATE TABLE minio.landing.mongodb_users_parquet (
     dt_current_timestamp VARCHAR,
     cpf VARCHAR
 ) WITH (
-    external_location = 's3a://landing/com.owshq.data/mongodb/users/parquet',
+    external_location = 's3a://landing/com.starrocks-mds.data/mongodb/users/parquet',
     format = 'PARQUET'
 );

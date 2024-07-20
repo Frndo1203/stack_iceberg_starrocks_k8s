@@ -61,7 +61,7 @@ Create a complete end-to-end data pipeline using Apache Airflow, Trino, and dbt-
 
 To build the data environment, follow these steps:
 1) [Trino](data/sql)
-2) [dbt_Core](data/dags/dbt/owshq)
+2) [dbt_Core](data/dags/dbt/starrocks-mds-dev)
 3) [Apache Airflow](data/dags/dbt_sql_transform.py)
 
 ### links
@@ -104,7 +104,7 @@ Create a complete end-to-end data pipeline using Apache Airflow, Trino, and dbt-
 
 To build the data environment, follow these steps:
 1) [Trino](data/sql)
-2) [dbt_Core](data/dags/dbt/owshq)
+2) [dbt_Core](data/dags/dbt/starrocks-mds-dev)
 3) [Apache Airflow](data/dags/dbt_sql_transform.py)
 
 ### links
@@ -147,7 +147,7 @@ Create a complete end-to-end data pipeline using Apache Airflow, Trino, and dbt-
 
 To build the data environment, follow these steps:
 1) [Trino](data/sql)
-2) [dbt_Core](data/dags/dbt/owshq)
+2) [dbt_Core](data/dags/dbt/starrocks-mds-dev)
 3) [Apache Airflow](data/dags/dbt_sql_transform.py)
 
 ### links

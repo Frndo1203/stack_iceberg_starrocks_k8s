@@ -16,5 +16,5 @@ dbt --version
 
 run
 ```sh
-dbt run --project-dir /Users/luanmorenomaciel/GitHub/proj-dbt-core-sql/dev --profiles-dir /Users/luanmorenomaciel/GitHub/proj-dbt-core-sql/dev 
+dbt run --project-dir /Users/foliveira/GitHub/proj-dbt-core-sql/dev --profiles-dir /Users/foliveira/GitHub/proj-dbt-core-sql/dev 
 ```

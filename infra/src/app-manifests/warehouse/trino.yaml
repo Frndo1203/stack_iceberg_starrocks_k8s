@@ -13,7 +13,7 @@ spec:
       valueFiles:
       - values.yaml
   destination:
-    name: 'owshq-orion-ws-dev'
+    name: 'starrocks-mds-dev'
     namespace: warehouse
     server: ''
   syncPolicy:
